@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced To-Do List</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="do-app">
+            <h2>To-Do List</h2>
+
+            <!-- Add Task Section -->
+            <div class="row">
+                <input type="text" id="input-box" placeholder="Add your task...">
+                <select id="priority">
+                    <option value="low">Low</option>
+                    <option value="medium" selected>Medium</option>
+                    <option value="high">High</option>
+                </select>
+                <input type="date" id="due-date" title="Select Due Date"> <!-- Due Date Input -->
+                <button onclick="addTask()" aria-label="Add Task">Add</button>
+                <button onclick="startListening()" aria-label="Start Listening">🎤</button>
+            </div>
+
+            <!-- Filters Section -->
+            <div class="filters">
+                <button onclick="filterTasks('all')">All</button>
+                <button onclick="filterTasks('completed')">Completed</button>
+                <button onclick="filterTasks('pending')">Pending</button>
+            </div>
+
+            <!-- Search Section -->
+            <div class="row">
+                <input type="text" id="search-box" placeholder="Search tasks..." oninput="searchTasks()">
+            </div>
+
+            <!-- Task List -->
+            <ul id="list-container"></ul>
+
+            <!-- Export Section -->
+            <div class="row">
+                <button onclick="exportTasks()" aria-label="Export Tasks">Export Tasks</button>
+            </div>
+
+            <!-- Gamification Section -->
+            <div class="gamification corner">
+                <p id="points-display">Points: 0</p>
+                <p id="badge-display">Badge: Beginner</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        function startListening() {
+            const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.lang = 'en-US';
+            recognition.start();
+            recognition.onresult = function(event) {
+                const spokenText = event.results[0][0].transcript;
+                document.getElementById('input-box').value = spokenText;
+                addTask();
+            };
+        }
+    </script>
+</body>
+</html>
